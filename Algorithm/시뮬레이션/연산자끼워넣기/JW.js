@@ -10,7 +10,9 @@ const input = fs
   .map((e) => e.split(' ').map(Number));
 
 const [N, arr, operators] = input;
-let [min, max] = [900000000, -900000000];
+
+let max = -1_000_000_000;
+let min = 1_000_000_000;
 
 const calculate = (a, b, i) => {
   switch (i) {
