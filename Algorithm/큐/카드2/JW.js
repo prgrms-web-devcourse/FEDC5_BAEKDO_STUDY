@@ -1,23 +1,64 @@
-const solution = (seq) => {
-  const queue = [...seq];
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+    this.prev = null;
+  }
+}
 
-  while (queue.length > 1) {
-    queue.shift();
-    const shift = queue.shift();
-    queue.push(shift);
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
   }
 
-  return queue;
-};
+  push(value) {
+    const newNode = new Node(value);
 
-let fs = require('fs');
-let input = fs
+    if (!this.head) {
+      // 리스트가 비어있는 경우
+      this.head = newNode;
+    } else {
+      this.tail.next = newNode;
+      newNode.prev = this.tail;
+    }
+
+    this.tail = newNode;
+    this.length++;
+
+    return newNode;
+  }
+
+  shift() {
+    this.head = this.head.next;
+    this.head.prev = null;
+    this.length--;
+  }
+
+  getHead() {
+    return this.head.value;
+  }
+
+  getSize() {
+    return this.length;
+  }
+}
+
+const input = require('fs')
   .readFileSync('Algorithm/큐/카드2/예제1.txt')
   .toString()
-  .trim()
-  .split('\n')
-  .map((e) => +e);
+  .trim();
 
-const seq = new Array(...input).fill(0).map((_, i) => i + 1);
-const answer = solution(seq);
-console.log(answer);
+const list = new LinkedList();
+for (let i = 1; i <= input; i++) {
+  list.push(i);
+}
+
+while (list.length > 1) {
+  list.shift();
+  list.push(list.getHead());
+  list.shift();
+}
+
+console.log(list.getHead());
